@@ -1,0 +1,18 @@
+---
+- name: Check carbon-clickhouse is installed
+  command: dpkg-query -f '${Status}' -W carbon-clickhouse
+  check_mode: false
+  register: carbon_clickhouse_installed
+  failed_when: carbon_clickhouse_installed.rc not in [0, 1]
+  changed_when: false
+
+- block:
+  - name: Download carbon-clickhouse deb package
+    get_url:
+      url: "https://github.com/go-graphite/carbon-clickhouse/releases/download/v{{ carbon_clickhouse_version }}/carbon-clickhouse_{{ carbon_clickhouse_version }}_amd64.deb"
+      dest: "/tmp/carbon-clickhouse_{{ carbon_clickhouse_version }}_amd64.deb"
+
+  - name: Install carbon-clickhouse
+    command: dpkg -i /tmp/carbon-clickhouse_{{ carbon_clickhouse_version }}_amd64.deb
+
+  when: carbon_clickhouse_installed.stdout != "install ok installed"

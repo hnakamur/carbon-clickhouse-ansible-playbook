@@ -1,0 +1,6 @@
+- name: Set up carbon-clickhouse
+  hosts: all
+  roles:
+  - role: clickhouse
+  - role: carbon_clickhouse
+  - role: go_carbon

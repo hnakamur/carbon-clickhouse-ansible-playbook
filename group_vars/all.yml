@@ -1,0 +1,15 @@
+---
+ansible_python_interpreter: "{{ python_fullpath | default('/usr/bin/python3') }}"
+clickhouse_cluster_name: cluster01
+
+clickhouse_clusters:
+- 'cluster01'
+
+clickhouse_shards:
+- {cluster_name: 'cluster01', shard_id: '01'}
+
+clickhouse_servers:
+- {host: 'carbon', cluster_name: 'cluster01', shard_id: '01', replica_id: '01'}
+
+go_carbon_version: "0.18.0"
+carbon_clickhouse_version: "0.11.8"
