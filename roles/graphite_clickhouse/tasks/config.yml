@@ -1,0 +1,23 @@
+---
+- name: Create graphite-clickhouse log directory
+  file:
+    path: /var/log/graphite-clickhouse
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Create graphite-clickhouse config file
+  template:
+    src: graphite-clickhouse.conf.j2
+    dest: /etc/graphite-clickhouse/graphite-clickhouse.conf
+    owner: root
+    group: root
+    mode: "0644"
+  register: graphite_clickhouse_config
+
+- name: Restart graphite-clickhouse serivce when config changed
+  systemd:
+    name: graphite-clickhouse
+    state: restarted
+  when: graphite_clickhouse_config.changed

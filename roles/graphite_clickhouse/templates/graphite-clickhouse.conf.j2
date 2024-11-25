@@ -1,0 +1,275 @@
+[common]
+ # general listener
+ listen = ":9090"
+ # listener to serve /debug/pprof requests. '-pprof' argument overrides it
+ pprof-listen = ""
+ max-cpu = 1
+ # limit number of results from find query, 0=unlimited
+ max-metrics-in-find-answer = 0
+ # limit numbers of queried metrics per target in /render requests, 0 or negative = unlimited
+ max-metrics-per-target = 15000
+ # if true, always return points for all metrics, replacing empty results with list of NaN
+ append-empty-series = false
+ # daemon returns empty response if query matches any of regular expressions
+ # target-blacklist = []
+ # daemon will return the freed memory to the OS when it>0
+ memory-return-interval = "0s"
+ # additional request headers to log
+ headers-to-log = []
+ # service discovery base weight (on idle)
+ base_weight = 0
+ # service discovery degraded load avg multiplier (if normalized load avg > degraged_load_avg) (default 4.0)
+ degraged-multiply = 4.0
+ # service discovery normilized load avg degraded point (default 1.0)
+ degraged-load-avg = 1.0
+ # service discovery type
+ service-discovery-type = 0
+ # service discovery address (consul)
+ service-discovery = ""
+ # service discovery namespace (graphite by default)
+ service-discovery-ns = ""
+ # service discovery datacenters (first - is primary, in other register as backup)
+ service-discovery-ds = []
+ # service discovery expire duration for cleanup (minimum is 24h, if enabled)
+ service-discovery-expire = "0s"
+
+ # find/tags cache config
+ [common.find-cache]
+  # cache type
+  type = "null"
+  # cache size
+  size-mb = 0
+  # memcached servers
+  memcached-servers = []
+  # default cache ttl
+  default-timeout = 0
+  # short-time cache ttl
+  short-timeout = 0
+  # finder/tags autocompleter cache ttl
+  find-timeout = 0
+  # maximum diration, used with short_timeout
+  short-duration = "0s"
+  # offset beetween now and until for select short cache timeout
+  short-offset = 0
+
+[feature-flags]
+ # if true, prefers carbon's behaviour on how tags are treated
+ use-carbon-behaviour = false
+ # if true, seriesByTag terms containing '!=' or '!=~' operators will not match metrics that don't have the tag at all
+ dont-match-missing-tags = false
+
+[metrics]
+ # graphite relay address
+ metric-endpoint = ""
+ # statsd server address
+ statsd-endpoint = ""
+ # Extended metrics
+ extended-stat = false
+ # graphite metrics send interval
+ metric-interval = "0s"
+ # graphite metrics send timeout
+ metric-timeout = "0s"
+ # graphite metrics prefix
+ metric-prefix = ""
+ # Request historgram buckets widths
+ request-buckets = []
+ # Request historgram buckets labels
+ request-labels = []
+
+ # Additional separate stats for until-from ranges
+ [metrics.ranges]
+
+ # Additional separate stats for until-from find ranges
+ [metrics.find-ranges]
+
+[clickhouse]
+ # default url, see https://clickhouse.tech/docs/en/interfaces/http. Can be overwritten with query-params
+ url = "http://localhost:8123?cancel_http_readonly_queries_on_client_close=1"
+ # default total timeout to fetch data, can be overwritten with query-params
+ data-timeout = "1m0s"
+ # Max queries to render queiries
+ render-max-queries = 0
+ # Concurrent queries to render queiries
+ render-concurrent-queries = 0
+ # Render adaptive queries (based on load average) for increase/decrease concurrent queries
+ render-adaptive-queries = 0
+ # Max queries for find queries
+ find-max-queries = 0
+ # Find concurrent queries for find queries
+ find-concurrent-queries = 0
+ # Find adaptive queries (based on load average) for increase/decrease concurrent queries
+ find-adaptive-queries = 0
+ # Max queries for tags queries
+ tags-max-queries = 0
+ # Concurrent queries for tags queries
+ tags-concurrent-queries = 0
+ # Tags adaptive queries (based on load average) for increase/decrease concurrent queries
+ tags-adaptive-queries = 0
+ # Minimum tags in seriesByTag query
+ tags-min-in-query = 0
+ # Minimum tags in autocomplete query
+ tags-min-in-autocomplete = 0
+
+ # customized query limiter for some users
+ # [clickhouse.user-limits]
+ # Date format (default, utc, both)
+ date-format = ""
+ # see doc/index-table.md
+ index-table = "graphite_index"
+ index-use-daily = true
+ # see doc/config.md
+ index-reverse = "auto"
+
+ # [[clickhouse.index-reverses]]
+  # rule is used when the target suffix is matched
+  # suffix = "suffix"
+  # same as index-reverse
+  # reverse = "auto"
+
+ # [[clickhouse.index-reverses]]
+  # rule is used when the target prefix is matched
+  # prefix = "prefix"
+  # same as index-reverse
+  # reverse = "direct"
+
+ # [[clickhouse.index-reverses]]
+  # rule is used when the target regex is matched
+  # regex = "regex"
+  # same as index-reverse
+  # reverse = "reversed"
+ # total timeout to fetch series list from index
+ index-timeout = "1m0s"
+ # 'tagged' table from carbon-clickhouse, required for seriesByTag
+ tagged-table = "graphite_tagged"
+ # or how long the daemon will query tags during autocomplete
+ tagged-autocomplete-days = 7
+ # whether to use date filter when searching for the metrics in the tagged-table
+ tagged-use-daily = true
+
+ # costs for tags (for tune which tag will be used as primary), by default is 0, increase for costly (with poor selectivity) tags
+ # [clickhouse.tagged-costs]
+ # old index table, DEPRECATED, see description in doc/config.md
+ # tree-table = ""
+ # reverse-tree-table = ""
+ # date-tree-table = ""
+ # date-tree-table-version = 0
+ # tree-timeout = "0s"
+ # is not recommended to use, https://github.com/lomik/graphite-clickhouse/wiki/TagsRU
+ # tag-table = ""
+ # add extra prefix (directory in graphite) for all metrics, w/o trailing dot
+ extra-prefix = ""
+ # TCP connection timeout
+ connect-timeout = "1s"
+ # will be removed in 0.14
+ # data-table = ""
+ # rollup-conf = "auto"
+ # max points per metric when internal-aggregation=true
+ max-data-points = 1048576
+ # ClickHouse-side aggregation, see doc/aggregation.md
+ internal-aggregation = true
+
+ # mTLS HTTPS configuration for connecting to clickhouse server
+ # [clickhouse.tls]
+  # ca-cert = []
+  # client-auth = ""
+  # server-name = ""
+  # min-version = ""
+  # max-version = ""
+  # insecure-skip-verify = false
+  # curves = []
+  # cipher-suites = []
+
+[[data-table]]
+ # data table from carbon-clickhouse
+ table = "graphite_data"
+ # if it stores direct or reversed metrics
+ reverse = false
+ # maximum age stored in the table
+ max-age = "0s"
+ # minimum age stored in the table
+ min-age = "0s"
+ # maximum until-from interval allowed for the table
+ max-interval = "0s"
+ # minimum until-from interval allowed for the table
+ min-interval = "0s"
+ # table allowed only if any metrics in target matches regexp
+ target-match-any = ""
+ # table allowed only if all metrics in target matches regexp
+ target-match-all = ""
+ # custom rollup.xml file for table, 'auto' and 'none' are allowed as well
+ rollup-conf = "auto"
+ # custom table for 'rollup-conf=auto', useful for Distributed or MatView
+ rollup-auto-table = ""
+ # rollup update interval for 'rollup-conf=auto'
+ rollup-auto-interval = "1m0s"
+ # is used when none of rules match
+ rollup-default-precision = 0
+ # is used when none of rules match
+ rollup-default-function = ""
+ # should be set to true if you don't have reverted regexps in rollup-conf for reversed tables
+ rollup-use-reverted = false
+ # valid values are 'graphite' of 'prometheus'
+ context = []
+
+# is not recommended to use, https://github.com/lomik/graphite-clickhouse/wiki/TagsRU
+# [tags]
+ # rules = ""
+ # date = ""
+ # extra-where = ""
+ # input-file = ""
+ # output-file = ""
+ # number of threads for uploading tags to clickhouse (1 by default)
+ # threads = 1
+ # compression method for tags before sending them to clickhouse (i.e. content encoding): gzip (default), none, zstd
+ # compression = "gzip"
+ # fixed tags version for testing purposes (by default the current timestamp is used for each upload)
+ # version = 0
+ # number of chunks for selecting metrics from clickhouse (10 by default)
+ # select-chunks-count = 0
+
+[carbonlink]
+ server = ""
+ threads-per-request = 10
+ connect-timeout = "50ms"
+ query-timeout = "50ms"
+ # timeout for querying and parsing response
+ total-timeout = "500ms"
+
+[prometheus]
+ # listen addr for prometheus ui and api
+ listen = ":9092"
+ # allows to set URL for redirect manually
+ external-url = ""
+ page-title = "Prometheus Time Series Collection and Processing Server"
+ lookback-delta = "5m0s"
+ # concurrently handled remote read requests
+ remote-read-concurrency-limit = 10
+
+# see doc/debugging.md
+[debug]
+ # the directory for additional debug output
+ directory = ""
+ # permissions for directory, octal value is set as 0o755
+ directory-perm = 493
+ # permissions for directory, octal value is set as 0o640
+ external-data-perm = 0
+
+[[logging]]
+ # handler name, default empty
+ logger = ""
+ # '/path/to/filename', 'stderr', 'stdout', 'empty' (=='stderr'), 'none'
+ file = "/var/log/graphite-clickhouse/graphite-clickhouse.log"
+ # 'debug', 'info', 'warn', 'error', 'dpanic', 'panic', and 'fatal'
+ level = "info"
+ # 'json' or 'console'
+ encoding = "mixed"
+ # 'millis', 'nanos', 'epoch', 'iso8601'
+ encoding-time = "iso8601"
+ # 'seconds', 'nanos', 'string'
+ encoding-duration = "seconds"
+ # passed to time.ParseDuration
+ sample-tick = ""
+ # first n messages logged per tick
+ sample-initial = 0
+ # every m-th message logged thereafter per tick
+ sample-thereafter = 0

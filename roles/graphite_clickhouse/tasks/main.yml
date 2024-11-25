@@ -1,0 +1,10 @@
+---
+- import_tasks: install.yml
+  tags:
+  - graphite_clickhouse
+  - graphite_clickhouse_install
+
+- import_tasks: config.yml
+  tags:
+  - graphite_clickhouse
+  - graphite_clickhouse_config

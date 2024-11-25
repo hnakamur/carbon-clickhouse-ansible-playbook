@@ -1,0 +1,18 @@
+---
+- name: Check graphite-clickhouse is installed
+  command: dpkg-query -f '${Status}' -W graphite-clickhouse
+  check_mode: false
+  register: graphite_clickhouse_installed
+  failed_when: graphite_clickhouse_installed.rc not in [0, 1]
+  changed_when: false
+
+- block:
+  - name: Download graphite-clickhouse deb package
+    get_url:
+      url: "https://github.com/go-graphite/graphite-clickhouse/releases/download/v{{ graphite_clickhouse_version }}/graphite-clickhouse_{{ graphite_clickhouse_version }}_amd64.deb"
+      dest: "/tmp/graphite-clickhouse_{{ graphite_clickhouse_version }}_amd64.deb"
+
+  - name: Install graphite-clickhouse
+    command: dpkg -i /tmp/graphite-clickhouse_{{ graphite_clickhouse_version }}_amd64.deb
+
+  when: graphite_clickhouse_installed.stdout != "install ok installed"

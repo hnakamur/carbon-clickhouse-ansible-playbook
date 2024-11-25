@@ -1,0 +1,27 @@
+- name: Install deb packages for building carbonapi
+  apt:
+    pkg:
+      - git
+      - make
+      - build-essential
+      - libcairo2-dev
+      - pkg-config
+    update_cache: yes
+
+- name: Download carbonapi git repository
+  git:
+    repo: https://github.com/go-graphite/carbonapi.git
+    dest: /usr/local/src/carbonapi
+    version: "v{{ carbonapi_version }}"
+
+- name: Build carbonapi
+  make:
+    chdir: /usr/local/src/carbonapi
+    target: carbonapi
+    params:
+      GO: /usr/local/go/bin/go
+
+- name: Install carbonapi
+  make:
+    chdir: /usr/local/src/carbonapi
+    target: install

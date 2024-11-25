@@ -1,0 +1,21 @@
+---
+- name: Check installed Go version
+  shell: /usr/local/go/bin/go version | sed 's/^go version go//;s/ .*//'
+  register: go_version_installed
+  changed_when: false
+  check_mode: false
+
+- block:
+
+  - name: Download Go
+    get_url:
+      url: "https://go.dev/dl/go{{ go_version }}.linux-amd64.tar.gz"
+      dest: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+
+  - name: Unpacks Go tarball
+    unarchive:
+      src: "/tmp/go{{ go_version }}.linux-amd64.tar.gz"
+      remote_src: true
+      dest: /usr/local/
+
+  when: go_version_installed.stdout != go_version

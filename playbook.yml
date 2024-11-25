@@ -3,4 +3,7 @@
   roles:
   - role: clickhouse
   - role: carbon_clickhouse
-  - role: go_carbon
+  - role: graphite_clickhouse
+  #- role: go_carbon
+  - role: go
+  - role: carbonapi

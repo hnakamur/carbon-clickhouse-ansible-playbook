@@ -1,0 +1,34 @@
+---
+- name: Create carbonapi log directory
+  file:
+    path: /var/log/carbonapi
+    state: directory
+    owner: carbon
+    group: carbon
+    mode: "0700"
+
+- name: Create carbonapi config file
+  template:
+    src: carbonapi.yaml.j2
+    dest: /etc/carbonapi.yaml
+    owner: carbon
+    group: carbon
+    mode: "0644"
+  register: carbonapi_config
+
+- name: Create carbonapi service file
+  template:
+    src: carbonapi.service.j2
+    dest: /etc/systemd/system/carbonapi.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: carbonapi_service
+
+- name: Restart carbonapi service when config or service file changed
+  systemd:
+    name: carbonapi
+    state: restarted
+    daemon_reload: "{{ carbonapi_service.changed }}"
+  when: carbonapi_config.changed or carbonapi_service.changed
+    

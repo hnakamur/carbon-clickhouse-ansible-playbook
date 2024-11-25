@@ -1,0 +1,10 @@
+---
+- import_tasks: install.yml
+  tags:
+  - carbonapi
+  - carbonapi_install
+
+- import_tasks: config.yml
+  tags:
+  - carbonapi
+  - carbonapi_config
