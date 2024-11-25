@@ -3,3 +3,8 @@
   tags:
   - carbon_clickhouse
   - carbon_clickhouse_install
+
+- import_tasks: config.yml
+  tags:
+  - carbon_clickhouse
+  - carbon_clickhouse_config

@@ -1,0 +1,25 @@
+---
+- name: Create carbon-clickhouse data directory
+  file:
+    path: /data/carbon-clickhouse
+    state: directory
+
+- name: Create carbon-clickhouse log directory
+  file:
+    path: /var/log/carbon-clickhouse
+    state: directory
+    owner: clickhouse
+    group: clickhouse
+    mode: '0700'
+
+- name: Create carbon-clickhouse config file
+  template:
+    src: carbon-clickhouse.conf.j2
+    dest: /etc/carbon-clickhouse/carbon-clickhouse.conf
+  register: carbon_clickhouse_conf
+
+- name: Restart carbon-clickohuse service when config file changed
+  systemd:
+    name: carbon-clickhouse
+    state: restarted
+  when: carbon_clickhouse_conf.changed

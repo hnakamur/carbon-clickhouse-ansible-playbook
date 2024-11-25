@@ -1,0 +1,132 @@
+[common]
+metric-prefix = "carbon.agents.{host}"
+metric-endpoint = "local"
+max-cpu = 1
+enabled = true
+metric-interval = "1m0s"
+
+[data]
+path = "/data/carbon-clickhouse/"
+chunk-max-size = 0
+compression-level = 0
+utc-date = false
+chunk-interval = "1s"
+chunk-auto-interval = ""
+compression = "none"
+
+#[upload]
+#[upload.graphite]
+#type = "points"
+#table = "graphite"
+#date = ""
+#zero-timestamp = false
+#threads = 1
+#url = "http://localhost:8123/"
+#compress-data = false
+#hash = ""
+#disable-daily-index = false
+#timeout = "1m0s"
+#[upload.graphite_tree]
+#type = "tree"
+#table = "graphite_tree"
+#date = ""
+#zero-timestamp = false
+#threads = 1
+#url = "http://localhost:8123/"
+#compress-data = false
+#hash = ""
+#disable-daily-index = false
+#timeout = "1m0s"
+#cache-ttl = "12h0m0s"
+
+[upload]
+[upload.graphite_data]
+type = "points"
+table = "graphite_data"
+threads = 1
+url = "http://localhost:8123/"
+timeout = "1m0s"
+
+[upload.graphite_reverse]
+type = "points-reverse"
+table = "graphite_reverse"
+threads = 1
+url = "http://localhost:8123/"
+timeout = "1m0s"
+
+[upload.graphite_index]
+type = "index"
+table = "graphite_index"
+threads = 1
+url = "http://localhost:8123/"
+timeout = "1m0s"
+cache-ttl = "12h0m0s"
+
+[upload.graphite_tagged]
+type = "tagged"
+table = "graphite_tagged"
+threads = 1
+url = "http://localhost:8123/"
+timeout = "1m0s"
+cache-ttl = "12h0m0s"
+
+[udp]
+listen = ":2003"
+enabled = true
+log-incomplete = false
+drop-longer-than = 0
+drop-future = "0s"
+drop-past = "0s"
+
+[tcp]
+listen = ":2003"
+enabled = true
+drop-longer-than = 0
+drop-future = "0s"
+drop-past = "0s"
+read-timeout = "2m0s"
+
+[pickle]
+listen = ":2004"
+enabled = true
+drop-longer-than = 0
+drop-future = "0s"
+drop-past = "0s"
+
+[grpc]
+listen = ":2005"
+enabled = false
+drop-longer-than = 0
+drop-future = "0s"
+drop-past = "0s"
+
+[prometheus]
+listen = ":2006"
+enabled = false
+drop-longer-than = 0
+drop-future = "0s"
+drop-past = "0s"
+
+[telegraf_http_json]
+listen = ":2007"
+enabled = false
+drop-longer-than = 0
+concat = "_"
+drop-future = "0s"
+drop-past = "0s"
+
+[pprof]
+listen = "localhost:7007"
+enabled = false
+
+[[logging]]
+logger = ""
+file = "/var/log/carbon-clickhouse/carbon-clickhouse.log"
+level = "info"
+encoding = "mixed"
+encoding-time = "iso8601"
+encoding-duration = "seconds"
+
+[convert_to_tagged]
+enabled = false
+separator = ""

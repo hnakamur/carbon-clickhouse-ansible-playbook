@@ -29,6 +29,7 @@
   - network-and-logging.xml
   - macros.xml
   - remote-servers.xml
+  - rollup.xml
   - timezone.xml
   register: clickhouse_config_files
 
@@ -38,3 +39,11 @@
     # NOTE: Use restarted here since clckhouse-server service does not support reload
     state: restarted
   when: clickhouse_config_files.changed
+
+- name: Copy init.sql
+  copy:
+    src: init.sql
+    dest: /root/init.sql
+
+- name: Run init.sql
+  shell: clickhouse-client < /root/init.sql
