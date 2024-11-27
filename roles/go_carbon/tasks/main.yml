@@ -1,5 +1,0 @@
----
-- import_tasks: install.yml
-  tags:
-  - go_carbon
-  - go_carbon_install
