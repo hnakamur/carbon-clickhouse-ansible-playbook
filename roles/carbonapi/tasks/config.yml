@@ -1,4 +1,15 @@
 ---
+- name: Create carbon group
+  group:
+    name: carbon
+    system: true
+
+- name: Create carbon user
+  user:
+    name: carbon
+    group: carbon
+    system: true
+
 - name: Create carbonapi log directory
   file:
     path: /var/log/carbonapi
