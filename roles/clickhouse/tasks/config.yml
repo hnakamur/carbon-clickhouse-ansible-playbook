@@ -2,9 +2,9 @@
   file:
     name: /etc/clickhouse-server/config.d
     state: directory
-    owner: root
-    group: root
-    mode: 0755
+    owner: clickhouse
+    group: clickhouse
+    mode: "0755"
 
 - name: Set shard_id, replica_id, and cluster_name for ClickHouse configs
   set_fact:
@@ -16,21 +16,25 @@
   file:
     name: /backups
     state: directory
-    mode: 0755
     owner: clickhouse
     group: clickhouse
+    mode: "0755"
 
 - name: Create files in /etc/clickhouse-server/config.d/ directory
   template:
     src: "{{ item }}.j2"
-    dest: "/etc/clickhouse-server/config.d/{{ item }}"
+    dest: "/etc/clickhouse-server/{{ item }}"
+    owner: clickhouse
+    group: clickhouse
+    mode: "0644"
   with_items:
-  - backup_disk.xml
-  - network-and-logging.xml
-  - macros.xml
-  - remote-servers.xml
-  - rollup.xml
-  - timezone.xml
+    - config.d/backup_disk.xml
+    - config.d/drop_size_limit.xml
+    - config.d/macros.xml
+    - config.d/network-and-logging.xml
+    - config.d/remote-servers.xml
+    - config.d/rollup.xml
+    - config.d/timezone.xml
   register: clickhouse_config_files
 
 - name: Restart clickhouse-server service when config files are changed
