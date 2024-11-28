@@ -14,5 +14,6 @@
 
   - name: Install graphite-clickhouse
     command: dpkg -i /tmp/graphite-clickhouse_{{ graphite_clickhouse_version }}_amd64.deb
+    register: graphite_clickhouse_deb_installed
 
   when: graphite_clickhouse_installed.stdout != "install ok installed"

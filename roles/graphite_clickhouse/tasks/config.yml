@@ -20,4 +20,4 @@
   systemd:
     name: graphite-clickhouse
     state: restarted
-  when: graphite_clickhouse_config.changed
+  when: graphite_clickhouse_config.changed or graphite_clickhouse_deb_installed.changed|default(false)
