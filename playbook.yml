@@ -4,6 +4,5 @@
   - role: clickhouse
   - role: carbon_clickhouse
   - role: graphite_clickhouse
-  - role: go
   - role: carbonapi
   - role: grafana_oss

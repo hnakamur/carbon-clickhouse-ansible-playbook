@@ -1,27 +1,18 @@
-- name: Install deb packages for building carbonapi
-  apt:
-    pkg:
-      - git
-      - make
-      - build-essential
-      - libcairo2-dev
-      - pkg-config
-    update_cache: yes
+---
+- name: Check carbonapi is installed
+  command: dpkg-query -f '${Status}' -W carbonapi
+  check_mode: false
+  register: carbonapi_installed
+  failed_when: carbonapi_installed.rc not in [0, 1]
+  changed_when: false
 
-- name: Download carbonapi git repository
-  git:
-    repo: https://github.com/go-graphite/carbonapi.git
-    dest: /usr/local/src/carbonapi
-    version: "v{{ carbonapi_version }}"
+- block:
+  - name: Download carbonapi deb package
+    get_url:
+      url: https://github.com/hnakamur/carbonapi-deb-docker/releases/download/{{ carbonapi_deb_version }}/carbonapi_{{ carbonapi_deb_version }}_amd64.deb    
+      dest: "/tmp/carbonapi_{{ carbonapi_deb_version }}_amd64.deb"
 
-- name: Build carbonapi
-  make:
-    chdir: /usr/local/src/carbonapi
-    target: carbonapi
-    params:
-      GO: /usr/local/go/bin/go
+  - name: Install carbonapi
+    command: apt-get install -y /tmp/carbonapi_{{ carbonapi_deb_version }}_amd64.deb
 
-- name: Install carbonapi
-  make:
-    chdir: /usr/local/src/carbonapi
-    target: install
+  when: carbonapi_installed.stdout != "install ok installed"

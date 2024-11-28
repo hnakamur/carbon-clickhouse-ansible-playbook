@@ -12,7 +12,6 @@ clickhouse_servers:
 - {host: 'carbon', cluster_name: 'cluster01', shard_id: '01', replica_id: '01'}
 
 go_version: "1.23.3"
-#go_carbon_version: "0.18.0"
 carbon_clickhouse_version: "0.11.8"
 graphite_clickhouse_version: "0.14.0"
-carbonapi_version: "0.17.0"
+carbonapi_deb_version: "0.17.0-1hn1ubuntu24.04"

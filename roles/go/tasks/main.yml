@@ -1,5 +1,0 @@
----
-- import_tasks: install.yml
-  tags:
-  - go
-  - go_install
