@@ -1,4 +1,4 @@
-<yandex>
+<clickhouse>
     <graphite_rollup>
         <path_column_name>Path</path_column_name>
         <time_column_name>Time</time_column_name>
@@ -7,8 +7,7 @@
         <pattern>
             <regexp>^carbon\.</regexp>
             <retention>
-                <!-- 90 days -->
-                <age>7776000</age>
+                <age>0</age>
                 <precision>60</precision>
             </retention>
         </pattern>
@@ -16,8 +15,7 @@
             <regexp>^my\.</regexp>
             <function>sum</function>
             <retention>
-                <!-- about 5 years (5 * 366 days) -->
-                <age>158112000</age>
+                <age>0</age>
                 <precision>1</precision>
             </retention>
         </pattern>
@@ -33,4 +31,4 @@
             </retention>
         </default>
     </graphite_rollup>
-</yandex>
+</clickhouse>

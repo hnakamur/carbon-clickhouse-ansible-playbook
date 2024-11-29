@@ -84,7 +84,7 @@
 
 [clickhouse]
  # default url, see https://clickhouse.tech/docs/en/interfaces/http. Can be overwritten with query-params
- url = "http://localhost:8123?cancel_http_readonly_queries_on_client_close=1"
+ url = "http://localhost:8123?cancel_http_readonly_queries_on_client_close=1&readonly=2&log_queries=1"
  # default total timeout to fetch data, can be overwritten with query-params
  data-timeout = "1m0s"
  # Max queries to render queiries
@@ -197,15 +197,15 @@
  # table allowed only if all metrics in target matches regexp
  target-match-all = ""
  # custom rollup.xml file for table, 'auto' and 'none' are allowed as well
- rollup-conf = "auto"
+ rollup-conf = "none"
  # custom table for 'rollup-conf=auto', useful for Distributed or MatView
  rollup-auto-table = ""
  # rollup update interval for 'rollup-conf=auto'
- rollup-auto-interval = "1m0s"
+ rollup-auto-interval = "1s"
  # is used when none of rules match
- rollup-default-precision = 0
+ rollup-default-precision = 1
  # is used when none of rules match
- rollup-default-function = ""
+ rollup-default-function = "sum"
  # should be set to true if you don't have reverted regexps in rollup-conf for reversed tables
  rollup-use-reverted = false
  # valid values are 'graphite' of 'prometheus'
