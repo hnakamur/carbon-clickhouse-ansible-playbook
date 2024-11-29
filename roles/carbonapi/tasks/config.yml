@@ -42,4 +42,8 @@
     state: restarted
     daemon_reload: "{{ carbonapi_service.changed }}"
   when: carbonapi_config.changed or carbonapi_service.changed
-    
+
+- name: Enable carbonapi auto start
+  systemd:
+    name: carbonapi
+    enabled: true
