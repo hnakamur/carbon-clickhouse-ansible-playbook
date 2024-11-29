@@ -15,3 +15,6 @@ go_version: "1.23.3"
 carbon_clickhouse_version: "0.11.8"
 graphite_clickhouse_version: "0.14.0"
 carbonapi_deb_version: "0.17.0-1hn1ubuntu24.04"
+
+grafana_clickhouse_user: "grafana"
+grafana_clickhouse_password: "grafana_password"

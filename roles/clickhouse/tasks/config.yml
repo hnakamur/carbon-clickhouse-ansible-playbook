@@ -51,3 +51,11 @@
 
 - name: Run init.sql
   shell: clickhouse-client < /root/init.sql
+
+- name: Copy create_grafana_user.sql
+  template:
+    src: create_grafana_user.sql.j2
+    dest: /root/create_grafana_user.sql
+
+- name: Run create_grafana_user.sql
+  shell: clickhouse-client < /root/create_grafana_user.sql

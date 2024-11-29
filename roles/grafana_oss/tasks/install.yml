@@ -23,3 +23,5 @@
     pkg:
       - grafana
     update_cache: yes
+
+- import_tasks: install_clickhouse_datasource.yml

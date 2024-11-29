@@ -1,8 +1,8 @@
 ---
 # https://grafana.com/tutorials/provision-dashboards-and-data-sources/
 - name: Create datasource for carbonapi in Grafana
-  copy:
-    src: datasources.yaml
+  template:
+    src: datasources.yaml.j2
     dest: /etc/grafana/provisioning/datasources/default.yaml
     owner: root
     group: grafana
