@@ -14,7 +14,7 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>_agg={{ func }}</regexp>
+            <regexp>agg={{ func }}</regexp>
             <function>{{ func }}</function>
             <retention>
                 <age>0</age>
