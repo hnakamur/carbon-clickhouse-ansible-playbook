@@ -11,6 +11,25 @@
                 <precision>60</precision>
             </retention>
         </pattern>
+{% for func in ['max', 'min', 'sum'] %}
+        <pattern>
+            <rule_type>tag_list</rule_type>
+            <regexp>_agg={{ func }}</regexp>
+            <function>{{ func }}</function>
+            <retention>
+                <age>0</age>
+                <precision>1</precision>
+            </retention>
+            <retention>
+                <age>60</age>
+                <precision>60</precision>
+            </retention>
+            <retention>
+                <age>3600</age>
+                <precision>3600</precision>
+            </retention>
+        </pattern>
+{% endfor %}
         <pattern>
             <regexp>^my\.</regexp>
             <function>sum</function>
