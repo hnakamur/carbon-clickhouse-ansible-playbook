@@ -47,3 +47,5 @@
   systemd:
     name: carbonapi
     enabled: true
+
+- import_tasks: config-carbonapi-prom.yml

@@ -1,12 +1,12 @@
 [Unit]
-Description=Replacement graphite API server.
+Description=Replacement graphite API server with graphite-clickhouse Prometheus backend.
 Documentation=https://github.com/go-graphite/carbonapi
 After=network-online.target local-fs.target
 Wants=network-online.target local-fs.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/carbonapi -config /etc/carbonapi.yaml
+ExecStart=/usr/bin/carbonapi -config /etc/carbonapi-prom.yaml
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 

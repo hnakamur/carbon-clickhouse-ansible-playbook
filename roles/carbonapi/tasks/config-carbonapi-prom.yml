@@ -1,0 +1,30 @@
+---
+- name: Create carbonapi-prom config file
+  template:
+    src: carbonapi-prom.yaml.j2
+    dest: /etc/carbonapi-prom.yaml
+    owner: carbon
+    group: carbon
+    mode: "0644"
+  register: carbonapi_prom_config
+
+- name: Create carbonapi-prom service file
+  template:
+    src: carbonapi-prom.service.j2
+    dest: /etc/systemd/system/carbonapi-prom.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: carbonapi_prom_service
+
+- name: Restart carbonapi-prom service when config or service file changed
+  systemd:
+    name: carbonapi-prom
+    state: restarted
+    daemon_reload: "{{ carbonapi_prom_service.changed }}"
+  when: carbonapi_prom_config.changed or carbonapi_prom_service.changed
+
+- name: Enable carbonapi-prom auto start
+  systemd:
+    name: carbonapi-prom
+    enabled: true
