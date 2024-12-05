@@ -14,7 +14,7 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>agg={{ func }};pat=1s</regexp>
+            <regexp>^sec\.;agg={{ func }}</regexp>
             <function>{{ func }}</function>
             <retention>
                 <age>0</age>
@@ -35,7 +35,7 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>agg={{ func }};pat=1m</regexp>
+            <regexp>^min\.;agg={{ func }}</regexp>
             <function>{{ func }}</function>
             <retention>
                 <age>0</age>
@@ -51,7 +51,7 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>agg={{ func }};pat=5m</regexp>
+            <regexp>^5min\.;agg={{ func }}</regexp>
             <function>{{ func }}</function>
             <retention>
                 <age>0</age>
@@ -67,7 +67,7 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>agg={{ func }};pat=1h</regexp>
+            <regexp>^1h\.;agg={{ func }}</regexp>
             <function>{{ func }}</function>
             <retention>
                 <age>0</age>
@@ -78,20 +78,72 @@
 {% for func in ['max', 'min', 'sum'] %}
         <pattern>
             <rule_type>tag_list</rule_type>
-            <regexp>agg={{ func }};pat=1d</regexp>
+            <regexp>^1d\.;agg={{ func }}</regexp>
             <function>{{ func }}</function>
+            <retention>
+                <age>0</age>
+                <precision>86400</precision>
+            </retention>
+        </pattern>
+{% endfor %}
+        <pattern>
+            <regexp>^sec\.</regexp>
+            <function>avg</function>
+            <retention>
+                <age>0</age>
+                <precision>1</precision>
+            </retention>
+            <retention>
+                <!-- 2d -->
+                <age>172800</age>
+                <precision>60</precision>
+            </retention>
+            <retention>
+                <!-- 30d -->
+                <age>2592000</age>
+                <precision>3600</precision>
+            </retention>
+        </pattern>
+        <pattern>
+            <regexp>^min\.</regexp>
+            <function>avg</function>
+            <retention>
+                <age>0</age>
+                <precision>60</precision>
+            </retention>
+            <retention>
+                <!-- 30d -->
+                <age>2592000</age>
+                <precision>3600</precision>
+            </retention>
+        </pattern>
+        <pattern>
+            <regexp>^5min\.</regexp>
+            <function>avg</function>
+            <retention>
+                <age>0</age>
+                <precision>300</precision>
+            </retention>
+            <retention>
+                <!-- 30d -->
+                <age>2592000</age>
+                <precision>3600</precision>
+            </retention>
+        </pattern>
+        <pattern>
+            <regexp>^1h\.</regexp>
+            <function>avg</function>
             <retention>
                 <age>0</age>
                 <precision>3600</precision>
             </retention>
         </pattern>
-{% endfor %}
         <pattern>
-            <regexp>^my\.</regexp>
-            <function>sum</function>
+            <regexp>^1d\.</regexp>
+            <function>avg</function>
             <retention>
                 <age>0</age>
-                <precision>1</precision>
+                <precision>86400</precision>
             </retention>
         </pattern>
         <default>
@@ -101,6 +153,7 @@
                 <precision>60</precision>
             </retention>
             <retention>
+                <!-- 30d -->
                 <age>2592000</age>
                 <precision>3600</precision>
             </retention>
